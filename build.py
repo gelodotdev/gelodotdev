@@ -68,9 +68,9 @@ def info_line(kind, value):
     return f'<tspan class="key">{escape(kind)}</tspan>: <tspan class="dim">{dots}</tspan> <tspan class="val">{escape(value)}</tspan>'
 
 
-def text_block(x, y, step, size, lines):
+def text_block(x, y, step, size, lines, cls=""):
     rows = "".join(f'<tspan x="{x}" y="{y + i * step}">{line}</tspan>' for i, line in enumerate(lines))
-    return f'<text font-size="{size}" xml:space="preserve">{rows}</text>'
+    return f'<text class="{cls}" font-size="{size}" xml:space="preserve">{rows}</text>'
 
 
 def main():
@@ -80,9 +80,9 @@ def main():
     art = [escape(line) for line in ART.read_text(encoding="utf-8").splitlines()]
     info = [info_line(k, v) for k, v in INFO + stats()]
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="985" height="560" viewBox="0 0 985 560" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace">
-<style>text{{fill:#c9d1d9;white-space:pre}}.key{{fill:#f2cc60}}.val{{fill:#58a6ff}}.dim{{fill:#616e7f}}</style>
+<style>text{{fill:#c9d1d9;white-space:pre}}.key{{fill:#f2cc60}}.val{{fill:#58a6ff}}.dim{{fill:#616e7f}}.art{{fill:#3fb950}}</style>
 <rect width="985" height="560" rx="15" fill="#161b22"/>
-{text_block(20, 30, 14.4, 12, art)}
+{text_block(20, 30, 14.4, 12, art, "art")}
 {text_block(470, 36, 20, 16, info)}
 </svg>
 '''
