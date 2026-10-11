@@ -2,6 +2,7 @@
 
     python build.py            # re-reads photo.jpg and refreshes GitHub stats
 """
+import hashlib
 import json
 import os
 import urllib.request
@@ -87,6 +88,12 @@ def main():
 </svg>
 '''
     (HERE / "card.svg").write_text(svg, encoding="utf-8")
+    # browsers cache the card by URL, so the README points at a new one whenever the card changes
+    version = hashlib.sha1(svg.encode()).hexdigest()[:8]
+    (HERE / "README.md").write_text(
+        f'<a href="https://github.com/{USER}">\n  <img alt="gelo@dotdev" src="card.svg?v={version}" width="100%">\n</a>\n',
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":
